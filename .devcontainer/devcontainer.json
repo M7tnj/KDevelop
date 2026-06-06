@@ -1,10 +1,32 @@
 {
-    "name": "RStudio Codespace",
-      "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-        "features": {
-            "ghcr.io/devcontainers/features/docker-in-docker:2": {}
-              },
-                "postStartCommand": "docker run -d -p 8787:8787 -e PASSWORD=rstudio rocker/rstudio:latest",
-                  "forwardPorts": [8787]
-                  
+  "name": "RStudio Codespace",
+  "image": "rocker/rstudio:latest",
+
+  // Ensure RStudio starts automatically when the codespace boots
+  "postStartCommand": "sudo rstudio-server start || true",
+
+  // Fix permissions so the 'rstudio' user can access your GitHub repo files
+  "postCreateCommand": "sudo chmod -R 777 /workspaces",
+
+  "containerEnv": {
+    // Bypass the RStudio login screen since Codespaces handle authentication
+    "DISABLE_AUTH": "true"
+  },
+
+  "forwardPorts": [8787],
+
+  "portsAttributes": {
+    "8787": {
+      "label": "RStudio Server",
+      "onAutoForward": "openPreview"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "REditorSupport.r" // Optional: Adds R support if you use the VS Code editor too
+      ]
+    }
+  }
 }
