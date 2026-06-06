@@ -1,11 +1,10 @@
 {
     "name": "RStudio Codespace",
-      "image": "rocker/rstudio:latest",
-        "overrideCommand": false,
-          "remoteUser": "rstudio",
-            "containerEnv": {
-                "PASSWORD": "rstudio"
-                  },
-                    "forwardPorts": [8787]
-                    }
+      "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+              },
+                "postStartCommand": "docker run -d -p 8787:8787 -e PASSWORD=rstudio rocker/rstudio:latest",
+                  "forwardPorts": [8787]
+                  }
 }
