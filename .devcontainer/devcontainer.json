@@ -1,4 +1,4 @@
-{
+{{
     "name": "RStudio Codespace",
       "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
         "features": {
@@ -7,3 +7,4 @@
                 "postStartCommand": "docker run -d -p 8787:8787 -e PASSWORD=rstudio rocker/rstudio:latest",
                   "forwardPorts": [8787]
                   }
+}
