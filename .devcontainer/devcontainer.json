@@ -1,18 +1,11 @@
 {
-  "name": "RStudio",
-  "image": "rocker/rstudio:latest",
-  "forwardPorts": [8787],
-  "portsAttributes": {
-    "8787": {
-      "label": "RStudio",
-      "onAutoForward": "openBrowser"
-    }
-  },
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "REditorSupport.r"
-      ]
-    }
-  }
+    "name": "RStudio Codespace",
+      "image": "rocker/rstudio:latest",
+        "overrideCommand": false,
+          "remoteUser": "rstudio",
+            "containerEnv": {
+                "PASSWORD": "rstudio"
+                  },
+                    "forwardPorts": [8787]
+                    }
 }
