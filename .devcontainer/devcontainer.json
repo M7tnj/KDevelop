@@ -5,8 +5,8 @@
   // Ensure RStudio starts automatically when the codespace boots
   "postStartCommand": "sudo rstudio-server start || true",
 
-  // Fix permissions so the 'rstudio' user can access your GitHub repo files
-  "postCreateCommand": "sudo chmod -R 777 /workspaces" && ln -s /workspaces/$(basename $GITHUB_WORKSPACE) /home/rstudio/project || true" ,
+  // Fix permissions AND create a shortcut in the RStudio home directory
+  "postCreateCommand": "sudo chmod -R 777 /workspaces && ln -sf /workspaces/$(basename $GITHUB_WORKSPACE) /home/rstudio/project || true",
 
   "containerEnv": {
     // Bypass the RStudio login screen since Codespaces handle authentication
