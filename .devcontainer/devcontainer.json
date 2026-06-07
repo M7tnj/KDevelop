@@ -2,14 +2,22 @@
   "name": "RStudio Codespace",
   "image": "rocker/rstudio:latest",
 
-  // Ensure RStudio starts automatically when the codespace boots
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/home/rstudio/project,type=bind,consistency=consistent",
+    "source=rstudio-library,target=/usr/local/lib/R/site-library,type=volume"
+  ],
+
   "postStartCommand": "sudo rstudio-server start || true",
 
-  // Fix permissions AND create a shortcut in the RStudio home directory
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y libuv1-dev && sudo chmod -R 777 /workspaces && ln -sf /workspaces/$(basename $GITHUB_WORKSPACE) /home/rstudio/project || true",
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y libuv1-dev && \
+    sudo chown -R rstudio:rstudio /home/rstudio/project && \
+    echo '.libPaths(c(\"/usr/local/lib/R/site-library\", .libPaths()))' >> /home/rstudio/.Rprofile && \
+    mkdir -p /home/rstudio/.config/rstudio/themes && \
+    cp -r /home/rstudio/project/core/rstudio-settings/rstudio-prefs.json /home/rstudio/.config/rstudio/ 2>/dev/null || true && \
+    cp -r /home/rstudio/project/core/rstudio-settings/themes/* /home/rstudio/.config/rstudio/themes/ 2>/dev/null || true && \
+    ln -sf /workspaces/$(basename $GITHUB_WORKSPACE) /home/rstudio/project || true",
 
   "containerEnv": {
-    // Bypass the RStudio login screen since Codespaces handle authentication
     "DISABLE_AUTH": "true"
   },
 
@@ -24,9 +32,9 @@
 
   "customizations": {
     "vscode": {
-      "extensions": [
-        "REditorSupport.r" // Optional: Adds R support if you use the VS Code editor too
-      ]
+      "extensions": ["REditorSupport.r"]
     }
-  }
+  },
+
+  "remoteUser": "rstudio"
 }
