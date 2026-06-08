@@ -13,8 +13,7 @@
   "postCreateCommand": "sudo chown -R rstudio:rstudio /home/rstudio/project && cp -r /home/rstudio/project/core/rstudio-settings/rstudio-prefs.json /home/rstudio/.config/rstudio/ 2>/dev/null || true && cp -r /home/rstudio/project/core/rstudio-settings/themes/* /home/rstudio/.config/rstudio/themes/ 2>/dev/null || true",
 
   "containerEnv": {
-    "DISABLE_AUTH": "true",
-    "SHELL": "/bin/bash"
+    "DISABLE_AUTH": "true"
   },
 
   "forwardPorts": [8787],
