@@ -1,7 +1,9 @@
 {
   "name": "RStudio Codespace",
 
-  "dockerfile": "Dockerfile",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
 
   "mounts": [
     "source=${localWorkspaceFolder},target=/home/rstudio/project,type=bind,consistency=consistent",
