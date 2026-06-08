@@ -7,9 +7,7 @@
     "source=rstudio-library,target=/usr/local/lib/R/site-library,type=volume"
   ],
 
-  "postStartCommand": "sudo rstudio-server start || true",
-
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y libuv1-dev && sudo chown -R rstudio:rstudio /home/rstudio/project && echo '.libPaths(c(\"/usr/local/lib/R/site-library\", .libPaths()))' >> /home/rstudio/.Rprofile && mkdir -p /home/rstudio/.config/rstudio/themes && cp -r /home/rstudio/project/core/rstudio-settings/rstudio-prefs.json /home/rstudio/.config/rstudio/ 2>/dev/null || true && cp -r /home/rstudio/project/core/rstudio-settings/themes/* /home/rstudio/.config/rstudio/themes/ 2>/dev/null || true && ln -sf /workspaces/$(basename $GITHUB_WORKSPACE) /home/rstudio/project || true",
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y libxml2-dev libcurl4-openssl-dev libssl-dev libglpk-dev libfreetype6-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libpng-dev libtiff5-dev libjpeg-dev libgit2-dev libbz2-dev liblzma-dev zlib1g-dev libsodium-dev && sudo chown -R rstudio:rstudio /home/rstudio/project && grep -qF '/usr/local/lib/R/site-library' /home/rstudio/.Rprofile 2>/dev/null || echo '.libPaths(c(\"/usr/local/lib/R/site-library\", .libPaths()))' >> /home/rstudio/.Rprofile && mkdir -p /home/rstudio/.config/rstudio/themes && cp -r /home/rstudio/project/core/rstudio-settings/rstudio-prefs.json /home/rstudio/.config/rstudio/ 2>/dev/null || true && cp -r /home/rstudio/project/core/rstudio-settings/themes/* /home/rstudio/.config/rstudio/themes/ 2>/dev/null || true",
 
   "containerEnv": {
     "DISABLE_AUTH": "true"
