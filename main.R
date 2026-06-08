@@ -374,7 +374,8 @@ results_all_gene <- results_probes %>%
   group_by(Symbol) %>%
   arrange(P.Value) %>%
   dplyr::slice(1) %>%
-  ungroup()
+  ungroup() %>%
+  dplyr::select(ProbeID, Symbol, everything())
 
 results_all_gene <- results_all_gene %>%
   dplyr::select(Symbol, EntrezID, SE)
@@ -526,7 +527,7 @@ p_scatter <- ggplot(scatter_df, aes(x = Progenitor, y = Adult_RPTE)) +
 ggsave("results/DEG/08_Scatter_Plot.png", p_scatter, width = 8, height = 8, dpi = 300)
 
 
-expr_collapsed <- expr_mat[results_all_gene$EntrezID, , drop = FALSE]
+expr_collapsed <- expr_mat[results_all_gene$ProbeID, , drop = FALSE]
 rownames(expr_collapsed) <- results_all_gene$Symbol
 
 deg_gene_symbols <- results_all_df %>%
@@ -539,16 +540,11 @@ cat("DEG genes found in expression matrix:", length(deg_gene_symbols), "\n")
 
 if (length(deg_gene_symbols) >= 2) {
   deg_expr <- expr_collapsed[deg_gene_symbols, , drop = FALSE]
-  
-  # Z-score normalization for heatmap
   deg_z <- t(scale(t(deg_expr)))
-  
-  # Annotation for columns (samples)
   annotation_col <- data.frame(
     Group = group,
     row.names = colnames(deg_z)
   )
-  
   ann_colors <- list(Group = c(Progenitor = "#E64B35", Adult_RPTE = "#4DBBD5"))
   pheatmap(
     deg_z,
@@ -563,17 +559,14 @@ if (length(deg_gene_symbols) >= 2) {
     main = "DEG Heatmap: Adult RPTE vs Progenitor\n(|log2FC| > 1, P < 0.05)",
     color = colorRampPalette(rev(brewer.pal(11, "RdBu")))(100),
     fontsize = 10,
-    filename = "Heatmap_DEG.png",
+    filename = "results/DEG/Heatmap_DEG.png",
     width = 10, height = 12, dpi = 300
   )
   cat("Heatmap saved: Heatmap_DEG.png\n")
 } else {
-  cat("WARNING: Fewer than 2 DEG genes found — skipping heatmap.\n")
-  cat("Check that Gene column in results_all_df contains actual gene symbols.\n")
   cat("First few Gene values:", head(results_all_df$Gene), "\n")
 }
 hub_of_hubs_genes <- c("CDC42", "CYCS", "CAT", "PIK3R1", "FOXO1", "NRAS", "PPARGC1A", "APOE")
-
 
 hoh_results <- results_all_df %>%
   filter(Gene %in% hub_of_hubs_genes) %>%
@@ -583,7 +576,7 @@ hoh_results <- results_all_df %>%
 if (nrow(hoh_results) > 0) {
   p_forest <- ggplot(hoh_results, aes(x = logFC, y = Gene)) +
     geom_vline(xintercept = 0, linetype = "dashed", color = "grey40") +
-    geom_errorbarh(aes(xmin = CI_lower, xmax = CI_upper), height = 0.2, linewidth = 0.8) +
+    geom_errorbar(aes(xmin = CI_lower, xmax = CI_upper), height = 0.2, linewidth = 0.8) +
     geom_point(size = 4, color = ifelse(hoh_results$logFC > 0, "#E64B35", "#4DBBD5")) +
     labs(
       title = "Hubs of Hubs: Effect Sizes with 95% CIs",
@@ -594,5 +587,5 @@ if (nrow(hoh_results) > 0) {
     theme_bw(base_size = 14) +
     theme(plot.title = element_text(hjust = 0.5, face = "bold"))
   
-  ggsave("Forest_Plot_HubsOfHubs.png", p_forest, width = 10, height = 6, dpi = 300)
+  ggsave("results/DEG/Forest_Plot_HubsOfHubs.png", p_forest, width = 10, height = 6, dpi = 300)
 }
