@@ -2,9 +2,7 @@
 
 ## Overview
 
-Reproducible R pipeline for differential gene expression analysis of **GSE8611** (Affymetrix Human Genome U133A Array), comparing **renal tubular progenitor cells** (n=3) vs **adult renal proximal tubule epithelial cells** (n=3).
-
-This README covers the pipeline from raw data download through DEG identification and visualization.
+Reproducible R pipeline for differential gene expression analysis of (Affymetrix Human Genome U133A Array), comparing **renal tubular progenitor cells** vs **adult renal proximal tubule epithelial cells**.
 
 ---
 
@@ -12,12 +10,12 @@ This README covers the pipeline from raw data download through DEG identificatio
 
 | Field | Value |
 |-------|-------|
-| GEO Accession | GSE8611 |
+| GEO Accession |
 | Platform | Affymetrix Human Genome U133A Array |
 | Organism | Homo sapiens |
-| Group 1 | Renal tubular progenitor cells (n=3) |
-| Group 2 | Adult renal proximal tubule epithelial cells (n=3) |
-| CEL files | 6 total |
+| Group 1 | Renal tubular progenitor cells |
+| Group 2 | Adult renal proximal tubule epithelial cells |
+
 
 ---
 
